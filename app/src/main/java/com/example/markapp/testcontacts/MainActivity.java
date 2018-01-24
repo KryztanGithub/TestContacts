@@ -308,7 +308,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
-    // Get Image
     public void getImageFromGallery(View view) {
 //        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
 //        photoPickerIntent.setType("image/*");
