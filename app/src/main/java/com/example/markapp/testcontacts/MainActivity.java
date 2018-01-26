@@ -11,11 +11,8 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,7 +21,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,11 +29,7 @@ import com.example.markapp.testcontacts.data.PhonebookContract.PhonebookEntry;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Calendar;
 
 import okhttp3.MediaType;
@@ -52,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private static final String jsonUrl = Utils.LOCALHOST_PATH + "json";
 
-    private static final int RESULT_LOAD_IMG = 0;
     private static final int PHONEBOOK_CONTACT_LOADER = 0;
 
     private Uri contactUri;
@@ -60,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     EditText mEditTextName;
     EditText mEditTextNumber;
     TextView mTextViewBirthday;
-    ImageView mImageViewPicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mEditTextName = findViewById(R.id.edittext_name);
         mEditTextNumber = findViewById(R.id.edittext_number);
         mTextViewBirthday = findViewById(R.id.textview_birthday);
-//        mImageViewPicture = findViewById(R.id.imageview_picture);
 
         contactUri = getIntent().getData();
         if (contactUri != null) {
@@ -108,8 +97,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             mEditTextName.setText(cursor.getString(cursor.getColumnIndex(PhonebookEntry.COLUMN_NAME)));
             mEditTextNumber.setText(String.valueOf(cursor.getInt(cursor.getColumnIndex(PhonebookEntry.COLUMN_PHONENUMBER))));
             mTextViewBirthday.setText(cursor.getString(cursor.getColumnIndex(PhonebookEntry.COLUMN_BIRTHDAY)));
-//            Bitmap image = BitmapFactory.decodeFile(cursor.getString(cursor.getColumnIndex(PhonebookEntry.COLUMN_IMAGE_PATH)));
-//            mImageViewPicture.setImageBitmap(image);
         }
     }
 
@@ -118,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mEditTextName.setText("");
         mEditTextNumber.setText("");
         mTextViewBirthday.setText("");
-//        mImageViewPicture.setImageResource(0);
     }
 
     // Save
@@ -126,19 +112,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         String name = mEditTextName.getText().toString();
         String numberString = mEditTextNumber.getText().toString();
         String birthday = mTextViewBirthday.getText().toString();
-//        Drawable picDrawable = mImageViewPicture.getDrawable();
 
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(numberString) || TextUtils.isEmpty(birthday)/* || picDrawable == null */) {
             Toast.makeText(this, "Must fill out all fields.", Toast.LENGTH_SHORT).show();
             return;
         }
-
-//        Bitmap bitmap = ((BitmapDrawable) picDrawable).getBitmap();
-//        String image = saveImage(bitmap);
-        // ImageURL in Web
-//        String webImageUrl = "images/" + image;
-//        String imageUrl = Utils.LOCALHOST_PATH + webImageUrl;
-//        String imagePath = Environment.getExternalStorageDirectory().toString() + "/" + webImageUrl;
 
         int number = Integer.parseInt(numberString);
 
@@ -146,20 +124,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         values.put(PhonebookEntry.COLUMN_NAME, name);
         values.put(PhonebookEntry.COLUMN_PHONENUMBER, number);
         values.put(PhonebookEntry.COLUMN_BIRTHDAY, birthday);
-//        values.put(PhonebookEntry.COLUMN_IMAGE_URL, imageUrl);
-//        values.put(PhonebookEntry.COLUMN_IMAGE_PATH, imagePath);
 
         if (contactUri != null) {
             getContentResolver().update(contactUri, values, null, null);
             long id = ContentUris.parseId(contactUri);
             values.put(PhonebookEntry._ID, id);
-//            values.put(PhonebookEntry.COLUMN_IMAGE_URL, webImageUrl);
             new SendPostRequest(values, this, "receiveUpdate").execute();
         } else {
             Uri uri = getContentResolver().insert(PhonebookEntry.CONTENT_URI, values);
             long id = ContentUris.parseId(uri);
             values.put(PhonebookEntry._ID, id);
-//            values.put(PhonebookEntry.COLUMN_IMAGE_URL, webImageUrl);
             new SendPostRequest(values, this, "receiveInsert").execute();
         }
 
@@ -306,50 +280,5 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void showDatePickerDialog(View view) {
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getSupportFragmentManager(), "datePicker");
-    }
-
-    public void getImageFromGallery(View view) {
-//        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-//        photoPickerIntent.setType("image/*");
-//        startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK) {
-            try {
-                final Uri imageUri = data.getData();
-                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                mImageViewPicture.setImageBitmap(selectedImage);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Something went wrong.", Toast.LENGTH_LONG).show();
-            }
-        } else {
-            Toast.makeText(this, "You haven't picked an image.", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public String saveImage(Bitmap bitmap) {
-        File sdCard = Environment.getExternalStorageDirectory();
-        File dir = new File(sdCard.getAbsolutePath() + "/images");
-        dir.mkdirs();
-
-        String fileName = System.currentTimeMillis() + ".jpg";
-        File outFile = new File(dir, fileName);
-
-        try {
-            FileOutputStream outStream = new FileOutputStream(outFile);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-            outStream.flush();
-            outStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Log.d("MainActivity", "onSaveImage - wrote to " + outFile.getAbsolutePath());
-        return fileName;
     }
 }

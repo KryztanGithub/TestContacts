@@ -28,26 +28,17 @@ public class PhonebookCursorAdapter extends CursorAdapter {
         TextView nameTextView = view.findViewById(R.id.list_name);
         TextView phonenumberTextView = view.findViewById(R.id.list_phonenumber);
         TextView birthdayTextView = view.findViewById(R.id.list_birthday);
-//        TextView imageUrlTextView = view.findViewById(R.id.list_image_url);
-//        TextView imagePathTextView = view.findViewById(R.id.list_image_path);
-//        ImageView imageImageView = view.findViewById(R.id.list_image);
 
         int id = cursor.getInt(cursor.getColumnIndex(PhonebookEntry._ID));
         int webId = cursor.getInt(cursor.getColumnIndex(PhonebookEntry.COLUMN_WEB_ID));
         String name = cursor.getString(cursor.getColumnIndex(PhonebookEntry.COLUMN_NAME));
         int phonenumber = cursor.getInt(cursor.getColumnIndex(PhonebookEntry.COLUMN_PHONENUMBER));
         String birthday = cursor.getString(cursor.getColumnIndex(PhonebookEntry.COLUMN_BIRTHDAY));
-//        String imageUrl = cursor.getString(cursor.getColumnIndex(PhonebookEntry.COLUMN_IMAGE_URL));
-//        String imagePath = cursor.getString(cursor.getColumnIndex(PhonebookEntry.COLUMN_IMAGE_PATH));
 
         idTextView.setText(String.valueOf(id));
         webIdTextView.setText(String.valueOf(webId));
         nameTextView.setText(name);
         phonenumberTextView.setText(String.valueOf(phonenumber));
         birthdayTextView.setText(birthday);
-//        imageUrlTextView.setText(imageUrl);
-//        imagePathTextView.setText(imagePath);
-//        Bitmap image = BitmapFactory.decodeFile(imagePath);
-//        imageImageView.setImageBitmap(image);
     }
 }

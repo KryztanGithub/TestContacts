@@ -24,8 +24,6 @@ public class PhonebookDbHelper extends SQLiteOpenHelper {
                 PhonebookEntry.COLUMN_NAME + " TEXT NOT NULL, " +
                 PhonebookEntry.COLUMN_PHONENUMBER + " INTEGER NOT NULL, " +
                 PhonebookEntry.COLUMN_BIRTHDAY + " TEXT NOT NULL, " +
-                PhonebookEntry.COLUMN_IMAGE_URL + " TEXT, " +
-                PhonebookEntry.COLUMN_IMAGE_PATH + " TEXT, " +
                 PhonebookEntry.COLUMN_DELETED + " TEXT NOT NULL DEFAULT 'n');";
 
         db.execSQL(SQL_CREATE_INVENTORY_TABLE);

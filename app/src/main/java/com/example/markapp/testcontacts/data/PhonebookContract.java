@@ -29,8 +29,6 @@ public class PhonebookContract {
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_PHONENUMBER = "phonenumber";
         public static final String COLUMN_BIRTHDAY = "birthday";
-        public static final String COLUMN_IMAGE_URL = "imageurl";
-        public static final String COLUMN_IMAGE_PATH = "imagepath";
         public static final String COLUMN_DELETED = "deleted";
     }
 

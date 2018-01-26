@@ -16,13 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLConnection;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -50,20 +44,13 @@ public final class Utils {
                 String name = currentContact.getString("name");
                 int phonenumber = currentContact.getInt("phonenumber");
                 String birthday = currentContact.getString("birthday");
-//                String image = currentContact.getString("image");
-//                String imageurl = LOCALHOST_PATH + image;
-//                String imagepath = Environment.getExternalStorageDirectory().toString() + "/" + image;
                 String deleted = currentContact.getString("deleted");
-
-//                new DownloadImageAndSave().execute(new String[]{imageurl, imagepath});
 
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(PhonebookEntry.COLUMN_WEB_ID, webid);
                 contentValues.put(PhonebookEntry.COLUMN_NAME, name);
                 contentValues.put(PhonebookEntry.COLUMN_PHONENUMBER, phonenumber);
                 contentValues.put(PhonebookEntry.COLUMN_BIRTHDAY, birthday);
-//                contentValues.put(PhonebookEntry.COLUMN_IMAGE_URL, imageurl);
-//                contentValues.put(PhonebookEntry.COLUMN_IMAGE_PATH, imagepath);
                 contentValues.put(PhonebookEntry.COLUMN_DELETED, deleted);
 
                 Cursor cursor = activity.getContentResolver().query(PhonebookEntry.CONTENT_URI,
@@ -145,52 +132,10 @@ public final class Utils {
             textView.append(" " + String.valueOf(cursor.getString(cursor.getColumnIndex(PhonebookEntry.COLUMN_PHONENUMBER))));
             textView.append(" " + cursor.getString(cursor.getColumnIndex(PhonebookEntry.COLUMN_BIRTHDAY)));
             textView.append(" " + cursor.getString(cursor.getColumnIndex(PhonebookEntry.COLUMN_DELETED)));
-//            textView.append(" " + cursor.getString(cursor.getColumnIndex(PhonebookEntry.COLUMN_IMAGE_URL)));
-//            textView.append(" " + cursor.getString(cursor.getColumnIndex(PhonebookEntry.COLUMN_IMAGE_PATH)));
             textView.append("\n");
         }
 
         cursor.close();
-
-    }
-
-    public static class DownloadImageAndSave extends AsyncTask<String[], Void, Void> {
-
-        @Override
-        protected Void doInBackground(String[]... strings) {
-            int count;
-            try {
-                URL url = new URL(strings[0][0]);
-
-                URLConnection conection = url.openConnection();
-                conection.connect();
-                // getting file length
-                int lenghtOfFile = conection.getContentLength();
-                // input stream to read file - with 8k buffer
-                InputStream input = new BufferedInputStream(url.openStream(), 8192);
-                // Output stream to write file
-                OutputStream output = new FileOutputStream(strings[0][1]);
-                byte data[] = new byte[1024];
-
-                long total = 0;
-                while ((count = input.read(data)) != -1) {
-                    total += count;
-
-                    // writing data to file
-                    output.write(data, 0, count);
-                }
-                // flushing output
-                output.flush();
-                // closing streams
-                output.close();
-                input.close();
-
-            } catch (Exception e) {
-                Log.e("Error: ", e.getMessage());
-            }
-            return null;
-        }
-
     }
 
 }
