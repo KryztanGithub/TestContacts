@@ -1,5 +1,7 @@
 package com.example.markapp.testcontacts;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentUris;
@@ -14,6 +16,8 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -35,6 +39,8 @@ import okhttp3.Response;
 public class ListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = "ListActivity";
+
+    private static final String jsonUrl = Utils.LOCALHOST_PATH + "json";
 
     private static final int PHONEBOOK_LOADER = 0;
 
@@ -151,5 +157,61 @@ public class ListActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mPhonebookCursorAdapter.swapCursor(null);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add:
+                Intent intent = new Intent(ListActivity.this, MainActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_sync:
+                new GetJsonOnBackground(this).execute();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    // Sync
+    @SuppressLint("StaticFieldLeak")
+    public class GetJsonOnBackground extends AsyncTask<Void, Void, String> {
+
+        private Activity activity;
+
+        GetJsonOnBackground(Activity activity) {
+            this.activity = activity;
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(jsonUrl)
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                String jsonResult = response.body().string();
+                Log.d(TAG, "doInBackground() called with: voids = [" + jsonResult + "]");
+                return jsonResult;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String jsonResult) {
+            Utils.insertJson(activity, jsonResult);
+        }
     }
 }

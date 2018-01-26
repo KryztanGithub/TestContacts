@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,11 +22,12 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".MainActivity" />
+
         <provider
             android:name=".data.PhonebookProvider"
             android:authorities="com.example.markapp.testcontacts" />
 
-        <activity android:name=".ListActivity" />
     </application>
 
 </manifest>

@@ -42,8 +42,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private static final String TAG = "MainActivity";
 
-    private static final String jsonUrl = Utils.LOCALHOST_PATH + "json";
-
     private static final int PHONEBOOK_CONTACT_LOADER = 0;
 
     private Uri contactUri;
@@ -65,15 +63,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if (contactUri != null) {
             getLoaderManager().initLoader(PHONEBOOK_CONTACT_LOADER, null, this);
         }
-    }
-
-    public void list(View view) {
-        Intent intent = new Intent(this, ListActivity.class);
-        startActivity(intent);
-    }
-
-    public void sync(View view) {
-        new GetJsonOnBackground(this).execute();
     }
 
     // Cursor Loader
@@ -138,41 +127,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    // Sync
-    @SuppressLint("StaticFieldLeak")
-    public class GetJsonOnBackground extends AsyncTask<Void, Void, String> {
-
-        private Activity activity;
-
-        GetJsonOnBackground(Activity activity) {
-            this.activity = activity;
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder()
-                    .url(jsonUrl)
-                    .build();
-
-            try {
-                Response response = client.newCall(request).execute();
-                String jsonResult = response.body().string();
-                Log.d(TAG, "doInBackground() called with: voids = [" + jsonResult + "]");
-                return jsonResult;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String jsonResult) {
-            Utils.insertJson(activity, jsonResult);
-        }
     }
 
     // Post Insert or Update to Web

@@ -25,14 +25,11 @@ public class PhonebookCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         TextView nameTextView = view.findViewById(R.id.list_name);
         TextView phonenumberTextView = view.findViewById(R.id.list_phonenumber);
-        TextView birthdayTextView = view.findViewById(R.id.list_birthday);
 
         String name = cursor.getString(cursor.getColumnIndex(PhonebookEntry.COLUMN_NAME));
         int phonenumber = cursor.getInt(cursor.getColumnIndex(PhonebookEntry.COLUMN_PHONENUMBER));
-        String birthday = cursor.getString(cursor.getColumnIndex(PhonebookEntry.COLUMN_BIRTHDAY));
 
         nameTextView.setText(name);
         phonenumberTextView.setText(String.valueOf(phonenumber));
-        birthdayTextView.setText(birthday);
     }
 }
