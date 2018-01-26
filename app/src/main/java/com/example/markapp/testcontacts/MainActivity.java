@@ -352,4 +352,5 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Log.d("MainActivity", "onSaveImage - wrote to " + outFile.getAbsolutePath());
         return fileName;
     }
+
 }
