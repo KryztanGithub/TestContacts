@@ -76,10 +76,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         new GetJsonOnBackground(this).execute();
     }
 
-    public void query(View view) {
-        Utils.displayDatabase(this);
-    }
-
     // Cursor Loader
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -113,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         String numberString = mEditTextNumber.getText().toString();
         String birthday = mTextViewBirthday.getText().toString();
 
-        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(numberString) || TextUtils.isEmpty(birthday)/* || picDrawable == null */) {
+        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(numberString) || TextUtils.isEmpty(birthday)) {
             Toast.makeText(this, "Must fill out all fields.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -175,8 +171,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         @Override
         protected void onPostExecute(String jsonResult) {
-            TextView jsonResultTextview = findViewById(R.id.textview);
-            jsonResultTextview.setText(jsonResult);
             Utils.insertJson(activity, jsonResult);
         }
     }
@@ -226,7 +220,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             return null;
         }
 

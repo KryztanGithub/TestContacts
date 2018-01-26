@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.markapp.testcontacts.data.PhonebookContract.PhonebookEntry;
@@ -112,30 +111,4 @@ public final class Utils {
             return null;
         }
     }
-
-    public static void displayDatabase(Activity activity) {
-        Cursor cursor = activity.getContentResolver().query(PhonebookEntry.CONTENT_URI, null,
-                null, null, null);
-
-        if (cursor.getCount() == 0) {
-            Toast.makeText(activity, "Database empty", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(activity, "Database queried", Toast.LENGTH_SHORT).show();
-        }
-
-        TextView textView = activity.findViewById(R.id.textview);
-        textView.setText("");
-        while (cursor.moveToNext()) {
-            textView.append(" " + String.valueOf(cursor.getInt(cursor.getColumnIndex(PhonebookEntry._ID))));
-            textView.append(" " + String.valueOf(cursor.getInt(cursor.getColumnIndex(PhonebookEntry.COLUMN_WEB_ID))));
-            textView.append(" " + cursor.getString(cursor.getColumnIndex(PhonebookEntry.COLUMN_NAME)));
-            textView.append(" " + String.valueOf(cursor.getString(cursor.getColumnIndex(PhonebookEntry.COLUMN_PHONENUMBER))));
-            textView.append(" " + cursor.getString(cursor.getColumnIndex(PhonebookEntry.COLUMN_BIRTHDAY)));
-            textView.append(" " + cursor.getString(cursor.getColumnIndex(PhonebookEntry.COLUMN_DELETED)));
-            textView.append("\n");
-        }
-
-        cursor.close();
-    }
-
 }

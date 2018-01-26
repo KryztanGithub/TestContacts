@@ -23,20 +23,14 @@ public class PhonebookCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView idTextView = view.findViewById(R.id.list_id);
-        TextView webIdTextView = view.findViewById(R.id.list_webid);
         TextView nameTextView = view.findViewById(R.id.list_name);
         TextView phonenumberTextView = view.findViewById(R.id.list_phonenumber);
         TextView birthdayTextView = view.findViewById(R.id.list_birthday);
 
-        int id = cursor.getInt(cursor.getColumnIndex(PhonebookEntry._ID));
-        int webId = cursor.getInt(cursor.getColumnIndex(PhonebookEntry.COLUMN_WEB_ID));
         String name = cursor.getString(cursor.getColumnIndex(PhonebookEntry.COLUMN_NAME));
         int phonenumber = cursor.getInt(cursor.getColumnIndex(PhonebookEntry.COLUMN_PHONENUMBER));
         String birthday = cursor.getString(cursor.getColumnIndex(PhonebookEntry.COLUMN_BIRTHDAY));
 
-        idTextView.setText(String.valueOf(id));
-        webIdTextView.setText(String.valueOf(webId));
         nameTextView.setText(name);
         phonenumberTextView.setText(String.valueOf(phonenumber));
         birthdayTextView.setText(birthday);
