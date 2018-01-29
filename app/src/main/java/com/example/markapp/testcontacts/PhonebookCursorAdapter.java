@@ -25,11 +25,14 @@ public class PhonebookCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         TextView nameTextView = view.findViewById(R.id.list_name);
         TextView phonenumberTextView = view.findViewById(R.id.list_phonenumber);
+        TextView letterTextView = view.findViewById(R.id.list_letter);
 
         String name = cursor.getString(cursor.getColumnIndex(PhonebookEntry.COLUMN_NAME));
         int phonenumber = cursor.getInt(cursor.getColumnIndex(PhonebookEntry.COLUMN_PHONENUMBER));
+        String letter = String.valueOf(Character.toUpperCase(name.charAt(0)));
 
         nameTextView.setText(name);
         phonenumberTextView.setText(String.valueOf(phonenumber));
+        letterTextView.setText(letter);
     }
 }

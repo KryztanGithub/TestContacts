@@ -18,6 +18,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     EditText mEditTextName;
     EditText mEditTextNumber;
-    TextView mTextViewBirthday;
+    EditText mTextViewBirthday;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +61,36 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mEditTextNumber = findViewById(R.id.edittext_number);
         mTextViewBirthday = findViewById(R.id.textview_birthday);
 
+        mTextViewBirthday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog();
+            }
+        });
+
         contactUri = getIntent().getData();
         if (contactUri != null) {
+            setTitle("Edit Contact");
             getLoaderManager().initLoader(PHONEBOOK_CONTACT_LOADER, null, this);
+        } else {
+            setTitle("Add a new Contact");
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_save:
+                save();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -93,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     // Save
-    public void save(View view) {
+    public void save() {
         String name = mEditTextName.getText().toString();
         String numberString = mEditTextNumber.getText().toString();
         String birthday = mTextViewBirthday.getText().toString();
@@ -124,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         Toast.makeText(MainActivity.this, "Contact saved!", Toast.LENGTH_SHORT).show();
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ListActivity.class);
         startActivity(intent);
         finish();
     }
@@ -224,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
-    public void showDatePickerDialog(View view) {
+    public void showDatePickerDialog() {
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }

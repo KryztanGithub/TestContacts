@@ -75,7 +75,6 @@ public final class Utils {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Toast.makeText(activity, "Synced", Toast.LENGTH_SHORT).show();
     }
 
     public static class SendPostRequestForAndroidId extends AsyncTask<Void, Void, Void> {
