@@ -13,6 +13,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -52,6 +53,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     EditText mEditTextNumber;
     EditText mTextViewBirthday;
 
+    TextInputLayout mTilName;
+    TextInputLayout mTilNumber;
+    TextInputLayout mTilBirthday;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +65,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mEditTextName = findViewById(R.id.edittext_name);
         mEditTextNumber = findViewById(R.id.edittext_number);
         mTextViewBirthday = findViewById(R.id.textview_birthday);
+
+        mTilName = findViewById(R.id.textinputlayout_name);
+        mTilNumber = findViewById(R.id.textinputlayout_number);
+        mTilBirthday = findViewById(R.id.textinputlayout_birthday);
 
         mTextViewBirthday.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             setTitle("Edit Contact");
             getLoaderManager().initLoader(PHONEBOOK_CONTACT_LOADER, null, this);
         } else {
-            setTitle("Add a new Contact");
+            setTitle("Add a new contact");
         }
     }
 
@@ -127,8 +136,26 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         String numberString = mEditTextNumber.getText().toString();
         String birthday = mTextViewBirthday.getText().toString();
 
+        if (TextUtils.isEmpty(name)) {
+            mTilName.setError("You need to enter a name.");
+        } else {
+            mTilName.setError(null);
+        }
+
+        if (TextUtils.isEmpty(numberString)) {
+            mTilNumber.setError("You need to enter a number.");
+        } else {
+            mTilNumber.setError(null);
+        }
+
+        if (TextUtils.isEmpty(birthday)) {
+            mTilBirthday.setError("You need to enter a birthday.");
+        } else {
+            mTilBirthday.setError(null);
+        }
+
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(numberString) || TextUtils.isEmpty(birthday)) {
-            Toast.makeText(this, "Must fill out all fields.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You must fill out all fields.", Toast.LENGTH_SHORT).show();
             return;
         }
 

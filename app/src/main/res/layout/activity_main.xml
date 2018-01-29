@@ -10,55 +10,101 @@
     android:paddingTop="16dp"
     tools:context="com.example.markapp.testcontacts.MainActivity">
 
-    <android.support.design.widget.TextInputLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:paddingTop="16dp">
 
-        <EditText
-            android:id="@+id/edittext_name"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/ic_person_24dp" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textinputlayout_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name"
-            android:inputType="text"
-            android:paddingTop="8dp"
-            android:textSize="18sp" />
+            app:errorEnabled="true">
 
-    </android.support.design.widget.TextInputLayout>
+            <EditText
+                android:id="@+id/edittext_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name"
+                android:inputType="text"
+                android:paddingTop="8dp"
+                android:textSize="18sp" />
 
-    <android.support.design.widget.TextInputLayout
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp">
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/edittext_number"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/ic_phone_24dp" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textinputlayout_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Contact Number"
-            android:inputType="number"
-            android:paddingTop="8dp"
-            android:textSize="18sp" />
+            app:errorEnabled="true">
 
-    </android.support.design.widget.TextInputLayout>
+            <EditText
+                android:id="@+id/edittext_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Contact Number"
+                android:inputType="number"
+                android:paddingTop="8dp"
+                android:textSize="18sp" />
 
-    <android.support.design.widget.TextInputLayout
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp">
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/textview_birthday"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/ic_event_24dp" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textinputlayout_birthday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:hint="Birthday"
-            android:inputType="date"
-            android:paddingTop="8dp"
-            android:textSize="18sp" />
+            app:errorEnabled="true">
 
-    </android.support.design.widget.TextInputLayout>
+            <EditText
+                android:id="@+id/textview_birthday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="Birthday"
+                android:inputType="date"
+                android:paddingTop="8dp"
+                android:textSize="18sp" />
+
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
 
 </LinearLayout>
